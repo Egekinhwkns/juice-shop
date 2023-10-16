@@ -16,7 +16,8 @@ jobs:
         run: |
           docker build -t dockerimage .
       - name: Trivy
-        run: trivy dockerimage --format sarif -o report.sarif  golang:1.12-alpine
+        run: brew install trivy;
+             trivy dockerimage --format sarif -o report.sarif  golang:1.12-alpine
       - name: Upload
         uses: github/codeql-action/upload-sarif@v2
         with:
