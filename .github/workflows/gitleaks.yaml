@@ -21,7 +21,6 @@ jobs:
           sarif_file: gitleaks-results.sarif
         if: always()
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
           GITLEAKS_ENABLE_SUMMARY: true
         continue-on-error: true
