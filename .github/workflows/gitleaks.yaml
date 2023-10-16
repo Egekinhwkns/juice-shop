@@ -1,0 +1,22 @@
+name: gitleaks
+
+on:
+  push:
+    branches: ["master","preparation"]
+  pull_request:
+    branches: ["master","preparation"]
+  workflow_dispatch:
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: FetchSourceCode
+        uses: action/checkout@v3
+      - name: SecretScan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
+          GITLEAKS_ENABLE_SUMMARY: true
+        continue-on-error: true
