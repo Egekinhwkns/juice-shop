@@ -12,7 +12,7 @@ jobs:
     name: semgrep
     runs-on: ubuntu-latest
     container:
-      image: anchore/syft
+      image: anchore/syft:latest
     steps:
     - name: FetchSourceCode
       uses: actions/checkout@v3
