@@ -19,3 +19,7 @@ jobs:
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: true
           GITLEAKS_ENABLE_SUMMARY: true
         continue-on-error: true
+      - name: Upload
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: gitleaks-results.sarif
