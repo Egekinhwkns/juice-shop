@@ -1,0 +1,25 @@
+name: build
+
+on:
+  push:
+    branches: ["master","preparation"]
+  pull_request:
+    branches: ["master","preparation"]
+  workflow_dispatch:
+
+jobs:
+  semgrep:
+    name: semgrep
+    runs-on: ubuntu-latest
+    container:
+      image: anchore/syft
+    steps:
+    - name: FetchSourceCode
+      uses: actions/checkout@v3
+    - name: Syft
+      run: syft --scope all-layers || true
+    - name: Upload
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: semgrep.sarif
+      if: always()
