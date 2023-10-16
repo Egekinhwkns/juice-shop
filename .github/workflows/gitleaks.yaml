@@ -16,6 +16,8 @@ jobs:
       - name: SecretScan
         uses: gitleaks/gitleaks-action@v2
         continue-on-error: true
+      - name: Locate
+        run: locate gitleaks-results.sarif
       - name: Upload
         uses: github/codeql-action/upload-sarif@v2
         with:
