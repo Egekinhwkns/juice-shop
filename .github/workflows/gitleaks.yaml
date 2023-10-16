@@ -16,10 +16,8 @@ jobs:
       - name: SecretScan
         uses: gitleaks/gitleaks-action@v2
         continue-on-error: true
-      - name: Locate
-        run: sudo apt install locate; locate gitleaks-results.sarif
       - name: Upload
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: '../results/gitleaks-results.sarif'
+          sarif_file: 'results.sarif'
         if: always()
