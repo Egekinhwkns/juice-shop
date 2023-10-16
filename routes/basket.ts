@@ -32,5 +32,5 @@ module.exports = function retrieveBasket () {
       }).catch((error: Error) => {
         next(error)
       })
-  }
+  } 
 }
