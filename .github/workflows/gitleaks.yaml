@@ -16,11 +16,12 @@ jobs:
       - name: SecretScan
         uses: gitleaks/gitleaks-action@v2
         with:
+          image-ref: 'gitleaks-results.sarif'
           format: 'sarif'
-          output: 'gitlekas.sarif'
+          output: 'a.sarif'
         continue-on-error: true
       - name: Upload
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'gitleaks-results.sarif'
+          sarif_file: 'a.sarif'
         if: always()
