@@ -18,7 +18,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     container:
-      image: anchore/syft:latest-debian
+      image: anchore/syft:debian-latest
     steps:
     - name: Checkout the code
       uses: actions/checkout@v3
