@@ -21,3 +21,8 @@ jobs:
         image: "localbuild/testimage:latest"
         artifact-name: image.spdx.sarif
         dependency-snapshot: true
+    - name: Upload
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: image.spdx.sarif
+      if: always()
