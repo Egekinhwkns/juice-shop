@@ -23,6 +23,7 @@ jobs:
       run: |
         cat syft.json | jq '. + {"version": "2.1.0", "runs": [{"tool": {"driver": {"name": "MyTool", "version": "1.0.0"}}, "results": .}]}' > syft.sarif
         echo "JSON to SARIF conversion complete."
+        cat syft.sarif
     - name: Upload
       uses: github/codeql-action/upload-sarif@v2
       with:
