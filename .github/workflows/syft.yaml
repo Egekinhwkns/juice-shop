@@ -18,8 +18,6 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-    - name: try
-      run: jq --version
     - name: Checkout the code
       uses: actions/checkout@v3
     - name: install syft
@@ -28,8 +26,12 @@ jobs:
       run: docker build . --file Dockerfile --tag localbuild/testimage:latest
     - name: Scan the image and upload dependency results
       run: syft localbuild/testimage:latest --scope all-layers -o json -t syft.json
+    - name: convert
+      run: |
+        cat syft.json | jq '. + {"version": "2.1.0", "runs": [{"tool": {"driver": {"name": "MyTool", "version": "1.0.0"}}, "results": .}]}' > syft.sarif
+        echo "JSON to SARIF conversion complete."
     - name: Upload
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: syft.json
+        sarif_file: syft.sarif
       if: always()
