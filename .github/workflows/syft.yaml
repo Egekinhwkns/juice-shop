@@ -18,9 +18,9 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag localbuild/testimage:latest
     - name: Scan the image and upload dependency results
-      run: syft localbuild/testimage:latest --scope all-layers -o json -t syft.json
+      run: syft localbuild/testimage:latest --scope all-layers -o json -t ~/syft.json
     - name: Upload
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: syft.json
+        sarif_file: ~/syft.json
       if: always()
