@@ -1,4 +1,4 @@
-name: syft
+name: Syft Scan
 
 on:
   push:
@@ -8,21 +8,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  Anchore-Build-Scan:
+  syft-scan:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout the code
-      uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-    - name: Scan the image and upload dependency results
-      uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
-      with:
-        image: "localbuild/testimage:latest"
-        artifact-name: syft.sarif
-        dependency-snapshot: true
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Syft
+      run: |
+        wget https://github.com/anchore/syft/releases/download/v0.10.2/syft-cli-linux
+        chmod +x syft-cli-linux
+        sudo mv syft-cli-linux /usr/local/bin/syft
+      # Use a Syft release suitable for your platform. You can find the latest releases at https://github.com/anchore/syft/releases.
+
+    - name: Syft Scan
+      run: |
+        syft packages image:/path/to/your/container-image:tag --output sarif > syft-results.sarif
+      # Replace "/path/to/your/container-image:tag" with the path to your container image.
+
     - name: Upload
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: syft.sarif
+        sarif_file: syft-results.sarif
       if: always()
