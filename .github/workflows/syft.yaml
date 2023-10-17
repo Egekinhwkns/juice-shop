@@ -1,4 +1,4 @@
-name: syft
+name: build
 
 on:
   push:
@@ -6,30 +6,20 @@ on:
   pull_request:
     branches: ["master","preparation"]
   workflow_dispatch:
-  
-permissions:
-  contents: write
-  pull-requests: write
-  repository-projects: write
 
 jobs:
-  Anchore-Build-Scan:
-    permissions:
-      contents: write
+  syft:
+    name: syft
     runs-on: ubuntu-latest
+    container:
+      image: anchore/syft:latest
     steps:
-    - name: Checkout the code
+    - name: FetchSourceCode
       uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-    - name: Scan the image and upload dependency results
-      uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
-      with:
-        image: "localbuild/testimage:latest"
-        artifact-name: image.spdx.sarif
-        dependency-snapshot: true
+    - name: Syft
+      run: syft --scope all-layers || true
     - name: Upload
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: image.spdx.sarif
+        sarif_file: semgrep.sarif
       if: always()
