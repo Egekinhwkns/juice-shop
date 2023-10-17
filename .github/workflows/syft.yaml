@@ -6,9 +6,14 @@ on:
   pull_request:
     branches: ["master","preparation"]
   workflow_dispatch:
+  
+permissions:
+  contents: write
 
 jobs:
   Anchore-Build-Scan:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the code
@@ -21,8 +26,3 @@ jobs:
         image: "localbuild/testimage:latest"
         artifact-name: image.spdx.sarif
         dependency-snapshot: true
-    - name: Upload
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: /tmp/sbom-action-u5Cjt9/image.spdx.sarif
-      if: always()
