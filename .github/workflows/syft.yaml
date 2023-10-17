@@ -17,11 +17,11 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    container:
-      image: anchore/syft:debian-latest
     steps:
     - name: Checkout the code
       uses: actions/checkout@v3
+    - name: install syft
+      run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag localbuild/testimage:latest
     - name: Scan the image and upload dependency results
